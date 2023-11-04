@@ -1,0 +1,26 @@
+{
+    "name": "w3-devmaster/laravel-notibot",
+    "description": "API package for laravel framework",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "W3Devmaster\\Notibot\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "w3-devmaster",
+            "email": "apichat_pep@hotmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "W3Devmaster\\Notibot\\NotibotServiceProvider"
+            ]
+        }
+    }
+}
