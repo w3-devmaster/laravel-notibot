@@ -66,13 +66,66 @@ public function line() {
 }
 ```
 
-## Advanced Use
+## Advanced Use (Transaction for alert)
 
-Use For :
+Create transaction :
 
 ```php
-$newsItem->addMedia($smallFile)->toMediaCollection('downloads', 'local');
-$newsItem->addMedia($bigFile)->toMediaCollection('downloads', 's3');
+use W3Devmaster\Notibot\Notibot;
+use W3Devmaster\Notibot\Sender\Email;
+
+public function create()
+{
+    $email = new Email();
+    $email->to('to-email@domain.com')
+        ->subject('test')
+        ->sender('sender-email@domain.com')
+        ->content([
+            'title' => 'Email Title',
+            'message' => 'Email Message',
+            'footer' => 'Email Footer',
+        ]);
+
+    $line = new LineNotify();
+
+    $line->to('<your line notify token>')
+        ->message('test message');
+
+    $tranx = [
+        'type' => 'onetime', // onetime | repeat
+        'start' => '2023-11-10 15:00',
+        'end' => '2023-11-10 15:00', // requried if type = repeat
+        'next' => 2, // minute | requried if type = repeat
+    ];
+
+    $notibot = Notibot::create($tranx,$email,$line);
+
+    return $notibot;
+}
+```
+
+Get all transaction :
+
+```php
+
+```
+
+View transaction by id :
+
+```php
+
+```
+
+Update transaction by id :
+
+```php
+
+```
+
+Delete transaction by id :
+
+```php
+
 ```
 
 ### Changelog
