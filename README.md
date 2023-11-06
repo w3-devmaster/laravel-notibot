@@ -1,5 +1,3 @@
-<p align="center"><img src="/art/socialcard.png" alt="Social Card of Laravel Media Library"></p>
-
 # Notibot Services : API Package for any alert
 
 [![Latest Version](https://img.shields.io/github/release/w3-devmaster/laravel-notibot.svg?style=flat-square)](https://github.com/w3-devmaster/laravel-notibot/releases)
