@@ -31,7 +31,7 @@ Email Alert (send now) :
 ```php
 use W3Devmaster\Notibot\Sender\Email;
 
-public function test()
+public function email()
 {
     $email = new Email();
     $send = $email
@@ -107,25 +107,54 @@ public function create()
 Get all transaction :
 
 ```php
-
+$notibot = new Notibot();
+$transactions = $notibot->transactions();
 ```
 
 View transaction by id :
 
 ```php
-
+$notibot = new Notibot();
+$transaction = $notibot->transaction($transactionId); // Get id from other transaction : response->data
 ```
 
 Update transaction by id :
 
 ```php
+public function update($transactionId)
+{
+    $email = new Email();
+    $email->to('to-email@domain.com')
+        ->subject('test')
+        ->sender('sender-email@domain.com')
+        ->content([
+            'title' => 'Email Title',
+            'message' => 'Email Message',
+            'footer' => 'Email Footer',
+        ]);
 
+    $line = new LineNotify();
+    $line->to('<your line notify token>')
+        ->message('test message');
+
+    $tranx = [
+        'type' => 'onetime', // onetime | repeat
+        'start' => '2023-11-10 15:00',
+        'end' => '2023-11-10 15:00', // requried if type = repeat
+        'next' => 2, // minute | requried if type = repeat
+    ];
+
+    $notibot = Notibot::update($transactionId,$tranx,$email,$line); // Get id from other transaction : response->data
+
+    return $notibot;
+}
 ```
 
 Delete transaction by id :
 
 ```php
-
+$notibot = new Notibot();
+$notibot->delete($transactionId); // Get id from other transaction : response->data
 ```
 
 ### Changelog
