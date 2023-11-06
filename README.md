@@ -1,7 +1,6 @@
 # Notibot Services : API Package for any alert
 
 [![Latest Version](https://img.shields.io/github/release/w3-devmaster/laravel-notibot.svg?style=flat-square)](https://github.com/w3-devmaster/laravel-notibot/releases)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/w3-devmaster/laravel-notibot/run-tests.yml?branch=master&style=flat-square&label=tests)
 [![Total Downloads](https://img.shields.io/packagist/dt/w3-devmaster/laravel-notibot.svg?style=flat-square)](https://packagist.org/packages/w3-devmaster/laravel-notibot)
 
 ## Installation
