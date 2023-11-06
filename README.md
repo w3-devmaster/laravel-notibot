@@ -6,20 +6,27 @@
 
 ## Installation
 
-Install with composer: 
+Install with composer : 
 
 ```bash
 composer require w3-devmaster/laravel-notibot
 ```
-Publish package config file:
+Publish package config file :
 
 ```bash
 php artisan vendor:publish --provider="W3Devmaster\Notibot\NotibotServiceProvider"
 ```
 
+Add below to .env file : 
+
+```env
+ALERT_UUID=<your uuid from service.notibot.me>
+ALERT_TOKEN=<your secret token from service.notibot.me>
+```
+
 ## Basic Use
 
-Email Alert (send now):
+Email Alert (send now) :
 
 ```php
 use W3Devmaster\Notibot\Sender\Email;
@@ -41,7 +48,7 @@ public function test()
 }
 ```
 
-Line notify (send now):
+Line notify (send now) :
 
 ```php
 use W3Devmaster\Notibot\Sender\LineNotify;
@@ -61,7 +68,7 @@ public function line() {
 
 ## Advanced Use
 
-Want to store some large files on another filesystem? No problem:
+Use For :
 
 ```php
 $newsItem->addMedia($smallFile)->toMediaCollection('downloads', 'local');
