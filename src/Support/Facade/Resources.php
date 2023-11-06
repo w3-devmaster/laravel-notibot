@@ -21,6 +21,7 @@ class Resources
         'sms' => self::APP_URI.'send/sms',
         // transaction system
         'transaction' => self::APP_URI.'transaction',
+        'logs' => self::APP_URI.'sendlogs',
     ];
 
 
@@ -170,13 +171,15 @@ class Resources
     public function transactions(int $perPage = null,int $page = null)
     {
         if($perPage == null){
-            $paginate = null;
+            $paginate = [];
         }else{
             $paginate = [
                 'perPage' => $perPage,
                 'page' => $page,
             ];
         }
+
+        $query_string = http_build_query($paginate);
 
         try {
             $client = new Client();
@@ -187,7 +190,7 @@ class Resources
 
             $response = $client->request('GET', self::PATH['transaction'], [
                 'headers' => $headers,
-                'form_params' => $paginate,
+                'query' => $query_string
             ]);
 
             $this->response = json_decode($response->getBody()->getContents(),true);
@@ -213,7 +216,6 @@ class Resources
 
             $response = $client->request('GET', self::PATH['transaction'].'/'.$id, [
                 'headers' => $headers,
-                'form_params' => [],
             ]);
 
             $this->response = json_decode($response->getBody()->getContents(),true);
@@ -227,6 +229,66 @@ class Resources
         }
     }
 
+    public function logs(int $perPage = null,int $page = null)
+    {
+        if($perPage == null){
+            $paginate = [];
+        }else{
+            $paginate = [
+                'perPage' => $perPage,
+                'page' => $page,
+            ];
+        }
+
+        $query_string = http_build_query($paginate);
+
+        try {
+            $client = new Client();
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic ' . $this->authenticate->getToken()
+            ];
+
+            $response = $client->request('GET', self::PATH['logs'], [
+                'headers' => $headers,
+                'query' => $query_string
+            ]);
+
+            $this->response = json_decode($response->getBody()->getContents(),true);
+            $this->payload['type'] = 'sendlogs.index';
+            $this->payload['data'] = $paginate;
+            $this->status = $this->response['status'] ?? 'failed';
+            return $this;
+        } catch (GuzzleException $e) {
+            $this->status = 'failed';
+            $this->errors = $e;
+            return $this;
+        }
+    }
+
+    public function log(int $id)
+    {
+        try {
+            $client = new Client();
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic ' . $this->authenticate->getToken()
+            ];
+
+            $response = $client->request('GET', self::PATH['logs'].'/'.$id, [
+                'headers' => $headers,
+            ]);
+
+            $this->response = json_decode($response->getBody()->getContents(),true);
+            $this->payload['type'] = 'sendlogs.index';
+            $this->status = $this->response['status'] ?? 'failed';
+            return $this;
+        } catch (GuzzleException $e) {
+            $this->status = 'failed';
+            $this->errors = $e;
+            return $this;
+        }
+    }
 
 
 }

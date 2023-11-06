@@ -56,14 +56,22 @@ class Notibot {
     }
 
     public static function transactions(int $perPage = null,int $page = null) {
-        return self::$app->transactions();
+        return self::$app->transactions($perPage,$page);
     }
 
-    public static function transaction(int $id = null) {
+    public static function transaction(int $id) {
         return self::$app->transaction($id);
     }
 
-    public static function delete(int $id = null) {
+    public static function logs(int $perPage = null,int $page = null) {
+        return self::$app->logs($perPage,$page);
+    }
+
+    public static function log(int $id) {
+        return self::$app->log($id);
+    }
+
+    public static function delete(int $id) {
         return self::$app->transaction($id);
     }
 }

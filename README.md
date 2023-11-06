@@ -20,9 +20,11 @@ php artisan vendor:publish --provider="W3Devmaster\Notibot\NotibotServiceProvide
 Add below to .env file : 
 
 ```env
-ALERT_UUID=<your uuid from service.notibot.me>
-ALERT_TOKEN=<your secret token from service.notibot.me>
+ALERT_UUID=<your uuid from notibot services>
+ALERT_TOKEN=<your secret token from notibot services>
 ```
+
+
 
 ## Basic Use
 
@@ -66,6 +68,8 @@ public function line() {
 }
 ```
 
+
+
 ## Advanced Use (Transaction for alert)
 
 Create transaction :
@@ -73,6 +77,8 @@ Create transaction :
 ```php
 use W3Devmaster\Notibot\Notibot;
 use W3Devmaster\Notibot\Sender\Email;
+use W3Devmaster\Notibot\Sender\LineNotify;
+
 
 public function create()
 {
@@ -108,7 +114,11 @@ Get all transaction :
 
 ```php
 $notibot = new Notibot();
+// Get all
 $transactions = $notibot->transactions();
+
+// Pages seperate
+$transactions = $notibot->transactions($perPage,$page);
 ```
 
 View transaction by id :
@@ -122,6 +132,11 @@ $transaction = $notibot->transaction($transactionId);
 Update transaction by id :
 
 ```php
+use W3Devmaster\Notibot\Notibot;
+use W3Devmaster\Notibot\Sender\Email;
+use W3Devmaster\Notibot\Sender\LineNotify;
+
+
 public function update($transactionId)
 {
     $email = new Email();
@@ -157,6 +172,25 @@ Delete transaction by id :
 $notibot = new Notibot();
 // Get id from other transaction : response->data
 $notibot->delete($transactionId);
+```
+
+Get send logs : 
+
+```php
+$notibot = new Notibot();
+// Get all logs
+$logs = $notibot->logs();
+
+// Pages seperate
+$logs = $notibot->logs($perPage,$page);
+```
+
+View send logs : 
+
+```php
+$notibot = new Notibot();
+// Log id from send logs
+$logs = $notibot->log($logsId);
 ```
 
 ### Changelog
