@@ -115,7 +115,8 @@ View transaction by id :
 
 ```php
 $notibot = new Notibot();
-$transaction = $notibot->transaction($transactionId); // Get id from other transaction : response->data
+// Get id from other transaction : response->data
+$transaction = $notibot->transaction($transactionId); 
 ```
 
 Update transaction by id :
@@ -144,7 +145,7 @@ public function update($transactionId)
         'next' => 2, // minute | requried if type = repeat
     ];
 
-    $notibot = Notibot::update($transactionId,$tranx,$email,$line); // Get id from other transaction : response->data
+    $notibot = Notibot::update($transactionId,$tranx,$email,$line); 
 
     return $notibot;
 }
@@ -154,7 +155,8 @@ Delete transaction by id :
 
 ```php
 $notibot = new Notibot();
-$notibot->delete($transactionId); // Get id from other transaction : response->data
+// Get id from other transaction : response->data
+$notibot->delete($transactionId);
 ```
 
 ### Changelog
