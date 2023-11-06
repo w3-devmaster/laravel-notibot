@@ -112,6 +112,21 @@ class Resources
         }
     }
 
+    public function response()
+    {
+        return $this->response;
+    }
+
+    public function getData()
+    {
+        return $this->response['data'] ?? null;
+    }
+
+    public function paginate()
+    {
+        return $this->response['paginate'] ?? null;
+    }
+
     public function createTransaction(?array $data = null)
     {
         if($data == null) return null;
