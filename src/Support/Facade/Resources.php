@@ -8,17 +8,19 @@ use GuzzleHttp\Exception\GuzzleException;
 class Resources
 {
     protected $authenticate = null;
-    protected $status = null;
-    protected $errors = null;
-    protected ?array $response = null;
-    protected ?array $payload = null;
+    public $status = null;
+    public $errors = null;
+    public ?array $response = null;
+    public ?array $payload = null;
 
     const APP_URI = Authenticate::APP_URI;
     const PATH = [
         'email' => self::APP_URI.'send/email',
         'line-notify' => self::APP_URI.'send/notify',
         'line-flex' => self::APP_URI.'send/lineflex',
-        'sms' => self::APP_URI.'send/sms'
+        'sms' => self::APP_URI.'send/sms',
+        // transaction system
+        'transaction' => self::APP_URI.'transaction',
     ];
 
 
@@ -108,5 +110,123 @@ class Resources
             return $this;
         }
     }
+
+    public function createTransaction(?array $data = null)
+    {
+        if($data == null) return null;
+
+        try {
+            $client = new Client();
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic ' . $this->authenticate->getToken()
+            ];
+
+            $response = $client->request('POST', self::PATH['transaction'], [
+                'headers' => $headers,
+                'form_params' => $data,
+            ]);
+
+            $this->response = json_decode($response->getBody()->getContents(),true);
+            $this->payload['type'] = 'transaction.store';
+            $this->payload['data'] = $data;
+            $this->status = $this->response['status'] ?? 'failed';
+            return $this;
+        } catch (GuzzleException $e) {
+            $this->status = 'failed';
+            $this->errors = $e;
+            return $this;
+        }
+    }
+
+    public function updateTransaction(int $transactionId,?array $data = null)
+    {
+        if($data == null) return null;
+
+        try {
+            $client = new Client();
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic ' . $this->authenticate->getToken()
+            ];
+
+            $response = $client->request('PATCH', self::PATH['transaction'].'/'.$transactionId, [
+                'headers' => $headers,
+                'form_params' => $data,
+            ]);
+
+            $this->response = json_decode($response->getBody()->getContents(),true);
+            $this->payload['type'] = 'transaction.update';
+            $this->payload['data'] = $data;
+            $this->status = $this->response['status'] ?? 'failed';
+            return $this;
+        } catch (GuzzleException $e) {
+            $this->status = 'failed';
+            $this->errors = $e;
+            return $this;
+        }
+    }
+
+    public function transactions(int $perPage = null,int $page = null)
+    {
+        if($perPage == null){
+            $paginate = null;
+        }else{
+            $paginate = [
+                'perPage' => $perPage,
+                'page' => $page,
+            ];
+        }
+
+        try {
+            $client = new Client();
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic ' . $this->authenticate->getToken()
+            ];
+
+            $response = $client->request('GET', self::PATH['transaction'], [
+                'headers' => $headers,
+                'form_params' => $paginate,
+            ]);
+
+            $this->response = json_decode($response->getBody()->getContents(),true);
+            $this->payload['type'] = 'transaction.index';
+            $this->payload['data'] = $paginate;
+            $this->status = $this->response['status'] ?? 'failed';
+            return $this;
+        } catch (GuzzleException $e) {
+            $this->status = 'failed';
+            $this->errors = $e;
+            return $this;
+        }
+    }
+
+    public function transaction(int $id)
+    {
+        try {
+            $client = new Client();
+            $headers = [
+                'Accept' => 'application/json',
+                'Authorization' => 'Basic ' . $this->authenticate->getToken()
+            ];
+
+            $response = $client->request('GET', self::PATH['transaction'].'/'.$id, [
+                'headers' => $headers,
+                'form_params' => [],
+            ]);
+
+            $this->response = json_decode($response->getBody()->getContents(),true);
+            $this->payload['type'] = 'transaction.show';
+            $this->status = $this->response['status'] ?? 'failed';
+            return $this;
+        } catch (GuzzleException $e) {
+            $this->status = 'failed';
+            $this->errors = $e;
+            return $this;
+        }
+    }
+
+
 
 }

@@ -9,9 +9,10 @@ use W3Devmaster\Notibot\Support\Facade\Resources;
 
 class LineNotify implements HasAlert
 {
+    const TYPE = 'line-notify';
     public $app;
-    public string $token;
-    public string $message;
+    public ?string $token = null;
+    public ?string $message = null;
     public int $stickerPackageId;
     public int $stickerId;
     public bool $delay;
@@ -69,6 +70,19 @@ class LineNotify implements HasAlert
         }
 
         return $this;
+    }
+
+    public function data()
+    {
+        if($this->token == null || $this->message == null) return;
+        return [
+            'token' => $this->token ?? null, //'AB2JtWl8pg9A9KXezlSWmIymNnG8dDJ7ly9SciqlWai',
+            'message' => $this->message ?? null,
+            'stickerPackageId' => $this->stickerPackageId ?? null,
+            'stickerId' => $this->stickerId ?? null,
+            "delay" => $this->delay ?? false,
+            "delayTime" => $this->delayTime ?? null,
+        ];
     }
 
     public function exec(?string $to = null, $data = null) : Resources

@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Validator;
 use W3Devmaster\Notibot\HasAlert;
 use W3Devmaster\Notibot\Support\Facade\Resources;
 
-
 class Email implements HasAlert
 {
+    const TYPE = 'email';
     public $app;
     public string $subject;
-    public string $toEmail;
+    public ?string $toEmail = null;
     public string $sender;
     public array $content;
     public bool $delay;
@@ -99,6 +99,26 @@ class Email implements HasAlert
     {
         $this->attachments = $attachments ?? [];
         return $this;
+    }
+
+    public function data()
+    {
+        if($this->toEmail == null) return;
+        return [
+            "subject" => $this->subject ?? null,
+            "toEmail" => $this->toEmail ?? null,
+            "sender" => $this->sender ?? null,
+            "content" => [
+                "title" => $this->content['title'] ?? null,
+                "message" => $this->content['message'] ?? null,
+                "footer" => $this->content['footer'] ?? null
+            ],
+            "delay" => $this->delay ?? false,
+            "delayTime" => $this->delayTime ?? null,
+            "attachments" => [],
+            "theme" => $this->theme ?? "default",
+            "mode" => $this->mode ?? "success"
+        ];
     }
 
     public function exec(?string $to = null,?array $data = null) : Resources
